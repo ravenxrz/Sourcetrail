@@ -95,25 +95,29 @@ void TabsController::showTab(Id tabId)
 		m_mainLayout->showOriginalViews();
 	}
 
-	Task::dispatch(TabId::app(), std::make_shared<TaskLambda>([this]() {
-					   m_screenSearchSender->clearMatches();
-				   }));
+	Task::dispatch(
+		TabId::app(),
+		std::make_shared<TaskLambda>([this]() { m_screenSearchSender->clearMatches(); }));
 }
 
 void TabsController::removeTab(Id tabId)
 {
 	// use app task scheduler thread to stop running tasks of tab
-	Task::dispatch(TabId::background(), std::make_shared<TaskLambda>([tabId, this]() {
-					   m_screenSearchSender->clearMatches();
+	Task::dispatch(
+		TabId::background(),
+		std::make_shared<TaskLambda>(
+			[tabId, this]()
+			{
+				m_screenSearchSender->clearMatches();
 
-					   TaskScheduler* scheduler = TaskManager::getScheduler(tabId).get();
-					   scheduler->terminateRunningTasks();
-					   scheduler->stopSchedulerLoop();
+				TaskScheduler* scheduler = TaskManager::getScheduler(tabId).get();
+				scheduler->terminateRunningTasks();
+				scheduler->stopSchedulerLoop();
 
-					   TaskManager::destroyScheduler(tabId);
+				TaskManager::destroyScheduler(tabId);
 
-					   getView()->destroyTab(tabId);
-				   }));
+				getView()->destroyTab(tabId);
+			}));
 }
 
 void TabsController::destroyTab(Id tabId)
@@ -209,11 +213,13 @@ void TabsController::handleMessage(MessageTabOpenWith* message)
 			{
 				match = matches[0];
 			}
+			getView()->closeTab();
 		}
 	}
 
 	if (match.isValid())
 	{
+		//		getView()->updateTab(message->tokenId, {match});
 		getView()->openTab(message->showTab, match);
 		m_isCreatingTab = true;
 	}
