@@ -66,6 +66,7 @@ void QtGraphNodeData::onClick()
 	}
 
 	MessageActivateNodes(m_data->getId()).dispatch();
+	onShowDefinition(true);
 }
 
 void QtGraphNodeData::onMiddleClick()
