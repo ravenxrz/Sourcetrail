@@ -831,23 +831,17 @@ void QtCodeArea::mouseReleaseEvent(QMouseEvent* event)
 	if (m_panningDistance < panningThreshold)	 // don't do anything if mouse is release to end
 												 // some real panning action.
 	{
-		if (Qt::KeyboardModifier::ControlModifier & QApplication::keyboardModifiers())
+		m_eventPosition = event->pos();
+		setIDECursorPosition();
+		std::vector<const Annotation*> annotations = getInteractiveAnnotationsForPosition(
+			event->pos());
+		if (annotations.size())
 		{
-			m_eventPosition = event->pos();
-			setIDECursorPosition();
+			activateAnnotationsOrErrors(annotations, true);
 		}
-		else
+		else if (m_navigator->getActiveLocalTokenIds().size())
 		{
-			std::vector<const Annotation*> annotations = getInteractiveAnnotationsForPosition(
-				event->pos());
-			if (annotations.size())
-			{
-				activateAnnotationsOrErrors(annotations, true);
-			}
-			else if (m_navigator->getActiveLocalTokenIds().size())
-			{
-				MessageActivateLocalSymbols({}).dispatch();
-			}
+			MessageActivateLocalSymbols({}).dispatch();
 		}
 	}
 }
