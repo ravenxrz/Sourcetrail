@@ -57,11 +57,11 @@ void ComponentManager::setupMain(ViewLayout* viewLayout, Id appId)
 
 	std::shared_ptr<GraphView> graphView = m_componentFactory.getViewFactory()->createGraphView(
 		viewLayout);
-//	std::shared_ptr<CodeView> codeView = m_componentFactory.getViewFactory()->createCodeView(
-//		viewLayout);
+	std::shared_ptr<CodeView> codeView = m_componentFactory.getViewFactory()->createCodeView(
+		viewLayout);
 
 	for (std::shared_ptr<View> view: std::vector<std::shared_ptr<View>>(
-			 {undoRedoView, searchView, bookmarkView, graphView, /* codeView */}))
+			 {undoRedoView, searchView, bookmarkView, graphView,  codeView }))
 	{
 		view->setEnabled(false);
 	}
@@ -71,14 +71,14 @@ void ComponentManager::setupMain(ViewLayout* viewLayout, Id appId)
 	m_singleViews.push_back(searchView);
 	m_singleViews.push_back(bookmarkView);
 	m_singleViews.push_back(graphView);
-//	m_singleViews.push_back(codeView);
+	m_singleViews.push_back(codeView);
 
 	std::shared_ptr<Component> screenSearchComponent =
 		m_componentFactory.createScreenSearchComponent(viewLayout);
 	ScreenSearchController* screenSearchController =
 		screenSearchComponent->getController<ScreenSearchController>();
 	screenSearchController->addResponder(graphView.get());
-//	screenSearchController->addResponder(codeView.get());
+	screenSearchController->addResponder(codeView.get());
 	m_components.push_back(screenSearchComponent);
 
 	std::shared_ptr<Component> tabsComponent = m_componentFactory.createTabsComponent(

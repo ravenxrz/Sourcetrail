@@ -408,6 +408,7 @@ bool QtCodeField::annotateText(
 			wasCoFocused != annotation.isCoFocused)
 		{
 			m_linesToRehighlight.push_back(static_cast<int>(annotation.startLine - m_startLineNumber));
+			m_refLine = m_linesToRehighlight.back();
 		}
 	}
 

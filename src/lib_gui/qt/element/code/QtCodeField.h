@@ -121,6 +121,7 @@ protected:
 	std::vector<Annotation> m_annotations;
 	std::vector<const Annotation*> m_hoveredAnnotations;
 	std::vector<int> m_linesToRehighlight;
+	int m_refLine;
 
 	QAction* m_openInTabAction;
 

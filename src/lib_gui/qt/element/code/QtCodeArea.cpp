@@ -531,6 +531,7 @@ void QtCodeArea::clearScreenMatches()
 
 void QtCodeArea::ensureLocationIdVisible(Id locationId, int parentWidth, bool animated)
 {
+	setIDECursorPosition();
 	QScrollBar* scrollBar = horizontalScrollBar();
 	if (!scrollBar || scrollBar->minimum() == scrollBar->maximum())
 	{
@@ -994,7 +995,16 @@ void QtCodeArea::updateLineNumberArea(QRect rect, int dy)
 
 void QtCodeArea::setIDECursorPosition()
 {
-	std::pair<int, int> lineColumn = toLineColumn(this->cursorForPosition(m_eventPosition).position());
+	std::pair<int, int> lineColumn = {m_refLine + 1, 0};
+//	if(m_linesToRehighlight.empty()) {
+//		 lineColumn = toLineColumn(this->cursorForPosition(m_eventPosition).position());
+//	} else {
+//		for(int v : m_linesToRehighlight) {
+//			printf("go to  hihglight %d\n", v);
+//		}
+//		lineColumn = {m_linesToRehighlight.back() + 1, 0};
+//	}
+//	std::pair<int, int> lineColumn = toLineColumn(textCursor().position());
 
 	MessageMoveIDECursor(getSourceLocationFile()->getFilePath(), lineColumn.first, lineColumn.second)
 		.dispatch();
