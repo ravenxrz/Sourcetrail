@@ -313,7 +313,7 @@ target_include_directories(${LIB_UTILITY_PROJECT_NAME} SYSTEM
 	PUBLIC ${Boost_INCLUDE_DIR}
 )
 
-target_link_libraries(${LIB_UTILITY_PROJECT_NAME} PUBLIC ${Boost_LIBRARIES} ${Boost_program_options} Qt5::Widgets Qt5::Network)
+target_link_libraries(${LIB_UTILITY_PROJECT_NAME} ${Boost_LIBRARIES} ${Boost_program_options} Qt5::Widgets Qt5::Network)
 
 if (UNIX AND NOT APPLE)
 	find_package(Threads REQUIRED)

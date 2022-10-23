@@ -31,8 +31,8 @@
 #include "compatibilityQt.h"
 #include "utility.h"
 #include "utilityApp.h"
-#include "utilityString.h"
 #include "utilityQt.h"
+#include "utilityString.h"
 
 MouseWheelOverScrollbarFilter::MouseWheelOverScrollbarFilter() {}
 
@@ -146,7 +146,8 @@ void QtCodeArea::lineNumberAreaPaintEvent(QPaintEvent* event)
 	QPainter painter(m_lineNumberArea);
 
 	utility::setWidgetBackgroundColor(
-		m_lineNumberArea, ColorScheme::getInstance()->getColor("code/snippet/line_number/background"));
+		m_lineNumberArea,
+		ColorScheme::getInstance()->getColor("code/snippet/line_number/background"));
 
 	QTextBlock block = firstVisibleBlock();
 	int blockNumber = block.blockNumber();
@@ -995,17 +996,7 @@ void QtCodeArea::updateLineNumberArea(QRect rect, int dy)
 
 void QtCodeArea::setIDECursorPosition()
 {
-	std::pair<int, int> lineColumn = {m_refLine + 1, 0};
-//	if(m_linesToRehighlight.empty()) {
-//		 lineColumn = toLineColumn(this->cursorForPosition(m_eventPosition).position());
-//	} else {
-//		for(int v : m_linesToRehighlight) {
-//			printf("go to  hihglight %d\n", v);
-//		}
-//		lineColumn = {m_linesToRehighlight.back() + 1, 0};
-//	}
-//	std::pair<int, int> lineColumn = toLineColumn(textCursor().position());
-
+	std::pair<int, int> lineColumn = {m_refLine, m_refColumn};
 	MessageMoveIDECursor(getSourceLocationFile()->getFilePath(), lineColumn.first, lineColumn.second)
 		.dispatch();
 }
