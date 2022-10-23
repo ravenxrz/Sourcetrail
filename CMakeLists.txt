@@ -183,7 +183,8 @@ set(Boost_USE_MULTITHREAD ON)
 set(Boost_USE_STATIC_LIBS ON CACHE BOOL "Set to ON to force the use of the static libraries.")
 set(Boost_USE_STATIC_RUNTIME OFF)
 
-find_package(Boost 1.67 COMPONENTS system program_options filesystem date_time REQUIRED)
+find_package(Boost 1.67 COMPONENTS system filesystem date_time thread iostreams REQUIRED)
+set(Boost_program_options boost_program_options)	# seems like there is a cmake or boost bug on mac-m1, we have to set boost_program_options separately
 
 
 # Qt ---------------------------------------------------------------------------
@@ -312,7 +313,7 @@ target_include_directories(${LIB_UTILITY_PROJECT_NAME} SYSTEM
 	PUBLIC ${Boost_INCLUDE_DIR}
 )
 
-target_link_libraries(${LIB_UTILITY_PROJECT_NAME} ${Boost_LIBRARIES} Qt5::Widgets Qt5::Network)
+target_link_libraries(${LIB_UTILITY_PROJECT_NAME} PUBLIC ${Boost_LIBRARIES} ${Boost_program_options} Qt5::Widgets Qt5::Network)
 
 if (UNIX AND NOT APPLE)
 	find_package(Threads REQUIRED)
@@ -352,7 +353,7 @@ target_include_directories(${LIB_PROJECT_NAME} SYSTEM
 	"${EXTERNAL_C_INCLUDE_PATHS}"
 )
 
-target_link_libraries(${LIB_PROJECT_NAME} ${LIB_UTILITY_PROJECT_NAME} ${LIB_GUI_PROJECT_NAME} ${Boost_LIBRARIES})
+target_link_libraries(${LIB_PROJECT_NAME} ${LIB_UTILITY_PROJECT_NAME} ${LIB_GUI_PROJECT_NAME} ${Boost_LIBRARIES} ${Boost_program_options})
 
 #configure language package defines
 configure_file(

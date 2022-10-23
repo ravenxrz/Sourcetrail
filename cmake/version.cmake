@@ -24,11 +24,14 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
     )
 
     execute_process(
-        COMMAND ${GIT_EXECUTABLE} describe --long --match "[0-9]*" HEAD
+        COMMAND ${GIT_EXECUTABLE} describe --long --tags --match "[0-9]*" HEAD
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         OUTPUT_VARIABLE GIT_VERSION_NUMBER
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
+
+
+
     string(REGEX REPLACE "^([0-9]+)\\..*" "\\1" VERSION_YEAR "${GIT_VERSION_NUMBER}")
     string(REGEX REPLACE "^[0-9]+\\.([0-9]+).*" "\\1" VERSION_MINOR "${GIT_VERSION_NUMBER}")
     string(REGEX REPLACE "^[0-9]+\\.[0-9]+-([0-9]+).*" "\\1" VERSION_COMMIT "${GIT_VERSION_NUMBER}")
